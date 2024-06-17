@@ -9,11 +9,13 @@ https://github.com/AlanWakeKing/mesto-project-ff.git
 
 <h2 aling="center">Скриншот(5 спринта)</h2>
 
-![](./images/screenshot(5.0).png)
+![](./src/images/screenshot(5.0).png)
 
 <h2 aling="center">Скриншот(6 спринта)</h2>
-![](./images/screenshot(6.0).png)
-![](./images/screenshot(6.1).png)
+
+![](./src/images/screenshot(6.0).png)
+
+![](./src/images/screenshot(6.1).png)
 <h2 aling="center">Автор</h2>
 
 - Github - [AlanWakeKing](https://github.com/AlanWakeKing)
