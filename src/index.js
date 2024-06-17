@@ -2,7 +2,7 @@ import _ from "lodash";
 import "./styles/scss/styles.scss";
 import { initialCards } from "./scripts/cards.js";
 import { createCard, deleteCard, likeCards } from "./scripts/card.js";
-import { openPopup, closePopup} from "./scripts/modal.js";
+import { openPopup, closePopup } from "./scripts/modal.js";
 
 const mContent = document.querySelector(".content");
 const cardsContent = mContent.querySelector(".places__list");
@@ -14,13 +14,13 @@ function getCards(cardData, deleteCard) {
 initialCards.forEach((card) => {
   getCards(card, deleteCard);
 });
-const formEdit = document.forms['edit-profile'];
+const formEdit = document.forms["edit-profile"];
 const name = formEdit.elements.name;
 const description = formEdit.elements.description;
 
-const formCreate = document.forms['new-place'];
-const placeName = formCreate.elements['place-name'];
-const link = formCreate.elements['link'];
+const formCreate = document.forms["new-place"];
+const placeName = formCreate.elements["place-name"];
+const link = formCreate.elements["link"];
 
 const profileTitle = mContent.querySelector(".profile__title");
 const profileDescription = mContent.querySelector(".profile__description");
@@ -28,13 +28,13 @@ const profileDescription = mContent.querySelector(".profile__description");
 const editProfileButton = mContent.querySelector(".profile__edit-button");
 
 editProfileButton.addEventListener("click", () => {
-	openPopup(popupEdit);
-})
+  openPopup(popupEdit);
+});
 
 const addProfileButton = mContent.querySelector(".profile__add-button");
 addProfileButton.addEventListener("click", () => {
-	openPopup(popupNew);
-})
+  openPopup(popupNew);
+});
 
 const popupNew = document.querySelector(".popup_type_new-card");
 const popupEdit = document.querySelector(".popup_type_edit");
@@ -74,27 +74,27 @@ name.value = profileTitle.textContent;
 description.value = profileDescription.textContent;
 
 function profileEdit(evt) {
-	evt.preventDefault();	
-	profileTitle.textContent = name.value;
-	profileDescription.textContent = description.value;
-	closePopup(popupEdit);
+  evt.preventDefault();
+  profileTitle.textContent = name.value;
+  profileDescription.textContent = description.value;
+  closePopup(popupEdit);
 }
 formEdit.addEventListener("submit", profileEdit);
 
-function formCreateCards(evt){
-	evt.preventDefault();
-	getCards({name: placeName.value, link: link.value}, deleteCard);
-	closePopup(popupNew);
-	resetCreateForm();
+function formCreateCards(evt) {
+  evt.preventDefault();
+  getCards({ name: placeName.value, link: link.value }, deleteCard);
+  closePopup(popupNew);
+  resetCreateForm();
 }
 
 formCreate.addEventListener("submit", formCreateCards);
 
 function resetEditForm() {
-	name.value = profileTitle.textContent;
-	description.value = profileDescription.textContent;
+  name.value = profileTitle.textContent;
+  description.value = profileDescription.textContent;
 }
 
 function resetCreateForm() {
-	formCreate.reset();
+  formCreate.reset();
 }
