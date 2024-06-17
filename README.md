@@ -16,6 +16,10 @@ https://github.com/AlanWakeKing/mesto-project-ff.git
 ![](./src/images/screenshot(6.0).png)
 
 ![](./src/images/screenshot(6.1).png)
+
+![](./src/images/screenshot(6.2).png)
+
+![](./src/images/screenshot(6.3).png)
 <h2 aling="center">Автор</h2>
 
 - Github - [AlanWakeKing](https://github.com/AlanWakeKing)

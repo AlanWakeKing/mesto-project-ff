@@ -18,6 +18,10 @@ const formEdit = document.forms['edit-profile'];
 const name = formEdit.elements.name;
 const description = formEdit.elements.description;
 
+const formCreate = document.forms['new-place'];
+const placeName = formCreate.elements['place-name'];
+const link = formCreate.elements['link'];
+
 const profileTitle = mContent.querySelector(".profile__title");
 const profileDescription = mContent.querySelector(".profile__description");
 
@@ -69,10 +73,28 @@ closeButton.forEach((closeButton) => {
 name.value = profileTitle.textContent;
 description.value = profileDescription.textContent;
 
-function hadleEditFormSubmit(evt) {
+function profileEdit(evt) {
 	evt.preventDefault();	
 	profileTitle.textContent = name.value;
 	profileDescription.textContent = description.value;
 	closePopup(popupEdit);
 }
-formEdit.addEventListener("submit", hadleEditFormSubmit);
+formEdit.addEventListener("submit", profileEdit);
+
+function formCreateCards(evt){
+	evt.preventDefault();
+	getCards({name: placeName.value, link: link.value}, deleteCard);
+	closePopup(popupNew);
+	resetCreateForm();
+}
+
+formCreate.addEventListener("submit", formCreateCards);
+
+function resetEditForm() {
+	name.value = profileTitle.textContent;
+	description.value = profileDescription.textContent;
+}
+
+function resetCreateForm() {
+	formCreate.reset();
+}
