@@ -7,12 +7,12 @@ import { openPopup, closePopup } from "./scripts/modal.js";
 const mContent = document.querySelector(".content");
 const cardsContent = mContent.querySelector(".places__list");
 
-function getCards(cardData, deleteCard) {
+function addCards(cardData, deleteCard) {
   const cardElement = createCard(cardData, deleteCard, openCards, likeCards);
-  cardsContent.prepend(cardElement);
+   cardsContent.prepend(cardElement);
 }
 initialCards.forEach((card) => {
-  getCards(card, deleteCard);
+  addCards(card, deleteCard);
 });
 const formEdit = document.forms["edit-profile"];
 const name = formEdit.elements.name;
@@ -28,6 +28,8 @@ const profileDescription = mContent.querySelector(".profile__description");
 const editProfileButton = mContent.querySelector(".profile__edit-button");
 
 editProfileButton.addEventListener("click", () => {
+	name.value = profileTitle.textContent;
+	description.value = profileDescription.textContent;
   openPopup(popupEdit);
 });
 
@@ -61,7 +63,7 @@ closeButton.forEach((closeButton) => {
     closePopup(closesPopup);
 
     if (closesPopup.classList.contains("popup_type_edit")) {
-      resetEditForm();
+      fiilEditForm();
     }
 
     if (closesPopup.classList.contains("popup_type_new-card")) {
@@ -70,8 +72,7 @@ closeButton.forEach((closeButton) => {
   });
 });
 
-name.value = profileTitle.textContent;
-description.value = profileDescription.textContent;
+
 
 function profileEdit(evt) {
   evt.preventDefault();
@@ -81,18 +82,17 @@ function profileEdit(evt) {
 }
 formEdit.addEventListener("submit", profileEdit);
 
-function formCreateCards(evt) {
+function createCards(evt) {
   evt.preventDefault();
-  getCards({ name: placeName.value, link: link.value }, deleteCard);
+  addCards({ name: placeName.value, link: link.value }, deleteCard);
   closePopup(popupNew);
-  resetCreateForm();
 }
 
-formCreate.addEventListener("submit", formCreateCards);
+formCreate.addEventListener("submit", createCards);
 
-function resetEditForm() {
-  name.value = profileTitle.textContent;
-  description.value = profileDescription.textContent;
+function fiilEditForm() {
+	name.value = profileTitle.textContent; 
+	description.value = profileDescription.textContent;;
 }
 
 function resetCreateForm() {

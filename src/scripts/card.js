@@ -1,5 +1,3 @@
-import { openCards } from "../index.js";
-
 const cardTemplate = document.querySelector("#card-template").content;
 export function createCard(cardData, deleteCard, openCards, likeCards) {
   const cardElement = cardTemplate.querySelector(".card").cloneNode(true);
@@ -25,7 +23,5 @@ export function deleteCard(evt) {
   card.remove();
 }
 export function likeCards(evt) {
-  if (evt.target.classList.contains("card__like-button")) {
     evt.target.classList.toggle("card__like-button_is-active");
-  }
 }
