@@ -28,8 +28,7 @@ const profileDescription = mContent.querySelector(".profile__description");
 const editProfileButton = mContent.querySelector(".profile__edit-button");
 
 editProfileButton.addEventListener("click", () => {
-	name.value = profileTitle.textContent;
-	description.value = profileDescription.textContent;
+	fiilEditForm();
   openPopup(popupEdit);
 });
 
@@ -61,11 +60,6 @@ closeButton.forEach((closeButton) => {
 
   closeButton.addEventListener("click", () => {
     closePopup(closesPopup);
-
-    if (closesPopup.classList.contains("popup_type_edit")) {
-      fiilEditForm();
-    }
-
     if (closesPopup.classList.contains("popup_type_new-card")) {
       resetCreateForm();
     }
