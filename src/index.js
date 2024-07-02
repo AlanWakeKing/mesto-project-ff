@@ -3,6 +3,7 @@ import "./styles/scss/styles.scss";
 import { initialCards } from "./scripts/cards.js";
 import { createCard, deleteCard, likeCards } from "./scripts/card.js";
 import { openPopup, closePopup } from "./scripts/modal.js";
+import { enableValidation,clearValidation } from "./scripts/validation.js";
 
 const mContent = document.querySelector(".content");
 const cardsContent = mContent.querySelector(".places__list");
@@ -30,11 +31,13 @@ const editProfileButton = mContent.querySelector(".profile__edit-button");
 editProfileButton.addEventListener("click", () => {
 	fiilEditForm();
   openPopup(popupEdit);
+	clearValidation(formEdit,[name,description]);
 });
 
 const addProfileButton = mContent.querySelector(".profile__add-button");
 addProfileButton.addEventListener("click", () => {
   openPopup(popupNew);
+	clearValidation(formCreate,[placeName,link]);
 });
 
 const popupNew = document.querySelector(".popup_type_new-card");
@@ -62,6 +65,7 @@ closeButton.forEach((closeButton) => {
     closePopup(closesPopup);
     if (closesPopup.classList.contains("popup_type_new-card")) {
       resetCreateForm();
+			clearValidation(formCreate,[placeName,link]);
     }
   });
 });
@@ -92,3 +96,12 @@ function fiilEditForm() {
 function resetCreateForm() {
   formCreate.reset();
 }
+const validationConf = {
+	formSelector: ".popup__form",
+	inputSelector: ".popup__input",
+	submitButtonSelector: ".popup__button",
+	inactiveButtonClass:".popup_button_disabled",
+	inputErrorClass: "popup__input_type_error",
+	errorClass: "popup__error_visible",
+};
+enableValidation();
