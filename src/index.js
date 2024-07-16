@@ -103,8 +103,14 @@ function createCards(evt) {
 	renderLoading(true,formCreate.elements['new-card-button']);
 
 	sendCardData({ name: placeName.value, link: link.value })
-	.then(newCardData => {
-		addCards({name: newCardData.value, newCardData: newCardData.value,cardId:newCardData._id,likes:0}, deleteCard);
+	.then(card => {
+		addCards({name: card.name,
+			link: card.link,
+			cardId: card._id,
+			cardOwnerId: card.owner._id,
+			myId: card._id,
+			likes: card.likes
+			}, deleteCard);
 	})
 	.catch((err) => {
 		console.log(err);
