@@ -26,10 +26,8 @@ module.exports = {
       {
         // регулярное выражение, которое ищет все js файлы
         test: /\.js$/,
-        // при обработке этих файлов нужно использовать babel-loader
-        use: "babel-loader",
-        // исключает папку node_modules, файлы в ней обрабатывать не нужно
-        exclude: "/node_modules/",
+        use: 'babel-loader',
+				exclude: "/node_modules/"
       },
 			{
 				// регулярное выражение, которое ищет все файлы с такими расширениями
