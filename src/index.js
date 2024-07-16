@@ -1,17 +1,17 @@
 import _ from "lodash";
 import "./styles/scss/styles.scss";
 
-
+import { GetCardsArray, getUserData, sendUserData, sendCardData, changeUserAvatar } from "./scripts/api.js";
 import { createCard, deleteCard, likeCards } from "./scripts/card.js";
 import { openPopup, closePopup } from "./scripts/modal.js";
 import { enableValidation,clearValidation } from "./scripts/validation.js";
-import {GetCardsArray, getUserData, sendUserData, sendCardData, changeUserAvatar} from "./scripts/api.js";
+
 
 const mContent = document.querySelector(".content");
 const cardsContent = mContent.querySelector(".places__list");
 
-function addCards(cardData, deleteCard) {
-  const cardElement = createCard(cardData, deleteCard, openCards, likeCards);
+function addCards(cardDatas, deleteCard) {
+  const cardElement = createCard(cardDatas, deleteCard, openCards, likeCards);
    cardsContent.prepend(cardElement);
 }
 
@@ -21,7 +21,7 @@ const description = formEdit.elements.description;
 
 const formCreate = document.forms["new-place"];
 const placeName = formCreate.elements["place-name"];
-const link = formCreate.elements["link"];
+const link = formCreate.elements.link;
 
 const profileTitle = mContent.querySelector(".profile__title");
 const profileDescription = mContent.querySelector(".profile__description");
@@ -92,8 +92,8 @@ function profileEdit(evt) {
 		})
 		.catch((err) => {
 			console.log(err);
-		});
-	renderLoading(false,formEdit.elements['edit-button']);
+		})
+		.finally(() => renderLoading(false, formEdit.elements['edit-button']));
   closePopup(popupEdit);
 }
 formEdit.addEventListener("submit", profileEdit);
@@ -101,14 +101,15 @@ formEdit.addEventListener("submit", profileEdit);
 function createCards(evt) {
   evt.preventDefault();
 	renderLoading(true,formCreate.elements['new-card-button']);
+
 	sendCardData({ name: placeName.value, link: link.value })
-	.then((res) => {
-		addCards({name: res.value, link: res.value,cardId:res._id,likes:0}, deleteCard);
+	.then(newCardData => {
+		addCards({name: newCardData.value, newCardData: newCardData.value,cardId:newCardData._id,likes:0}, deleteCard);
 	})
 	.catch((err) => {
 		console.log(err);
-	});
-	renderLoading(false,formCreate.elements['new-card-button']);
+	})
+	.finally(() => renderLoading(false, formCreate.elements['new-card-button']));
   // addCards({ name: placeName.value, link: link.value }, deleteCard);
   closePopup(popupNew);
 }
@@ -125,11 +126,10 @@ function handleChangeAvatarFormSubmit(evt) {
         .then(newAvatarConfig => {
             profileAvatarPicture.style = "background-image: url(" + newAvatarConfig.avatar + ");";
         })
-        .catch(err => {console.log(err)});
-
-    renderLoading(false, formChangeAvatarElement.elements['change-avatar-button']);
+        .catch(err => {console.log(err)})
+				.finally(() => renderLoading(false, formChangeAvatarElement.elements['change-avatar-button']));
     closePopup(document.querySelector('.popup_is-opened'));
-    resetChangeAvatarForm();
+    // resetChangeAvatarForm();
 }
 
 formChangeAvatarElement.addEventListener('submit', handleChangeAvatarFormSubmit);
@@ -164,7 +164,8 @@ enableValidation(validationConf);
 
 Promise.all([GetCardsArray(), getUserData()])
 .then(([cardsArray, myUserData]) => {
-	cardsArray.reverse().forEach(card => addCards({name: card.name,
+	cardsArray.reverse().forEach(card => addCards(
+		{ name: card.name,
 			link: card.link,
 			cardId: card._id,
 			cardOwnerId: card.owner._id,
