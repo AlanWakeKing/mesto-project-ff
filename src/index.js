@@ -1,7 +1,7 @@
 import _ from "lodash";
 import "./styles/scss/styles.scss";
 
-import { GetCardsArray, getUserData, sendUserData, sendCardData, changeUserAvatar } from "./scripts/api.js";
+import { getCardsArray, getUserData, sendUserData, sendCardData, changeUserAvatar } from "./scripts/api.js";
 import { createCard, deleteCard, likeCards } from "./scripts/card.js";
 import { openPopup, closePopup } from "./scripts/modal.js";
 import { enableValidation,clearValidation } from "./scripts/validation.js";
@@ -9,11 +9,6 @@ import { enableValidation,clearValidation } from "./scripts/validation.js";
 
 const mContent = document.querySelector(".content");
 const cardsContent = mContent.querySelector(".places__list");
-
-function addCards(cardDatas, deleteCard) {
-  const cardElement = createCard(cardDatas, deleteCard, openCards, likeCards);
-   cardsContent.prepend(cardElement);
-}
 
 const formEdit = document.forms["edit-profile"];
 const name = formEdit.elements.name;
@@ -29,6 +24,25 @@ const profileAvaPic = mContent.querySelector(".profile__image");
 
 const editProfileButton = mContent.querySelector(".profile__edit-button");
 
+const popupNew = document.querySelector(".popup_type_new-card");
+const popupEdit = document.querySelector(".popup_type_edit");
+
+const closeButtons = document.querySelectorAll(".popup__close");
+
+const imgPopup = document.querySelector(".popup_type_image");
+const popupImgConteiner = imgPopup.querySelector(".popup__image");
+const popupCaption = imgPopup.querySelector(".popup__caption");
+
+const changeAvatarButton = mContent.querySelector('.profile__image');
+const changeAvatarPopup = document.querySelector('.popup_type_change-avatar')
+
+let userId;
+
+function addCards(cardDatas, deleteCard) {
+  const cardElement = createCard(cardDatas, deleteCard, openCards, likeCards);
+   cardsContent.prepend(cardElement);
+}
+
 editProfileButton.addEventListener("click", () => {
 	fiilEditForm();
   openPopup(popupEdit);
@@ -41,47 +55,33 @@ addProfileButton.addEventListener("click", () => {
 	clearValidation(formCreate,validationConf);
 });
 
-const popupNew = document.querySelector(".popup_type_new-card");
-const popupEdit = document.querySelector(".popup_type_edit");
-
-const closeButton = document.querySelectorAll(".popup__close");
-
-const imgPopup = document.querySelector(".popup_type_image");
-const popupImgConteiner = imgPopup.querySelector(".popup__image");
-const popupCaption = imgPopup.querySelector(".popup__caption");
-
-const changeAvatarButton = mContent.querySelector('.profile__image');
-const changeAvatarPopup = document.querySelector('.popup_type_change-avatar')
-
 changeAvatarButton.addEventListener('click', () => {
 	openPopup(changeAvatarPopup);
 	clearValidation(formChangeAvatarElement, validationConf);
 });
 export function openCards(evt) {
-  if (evt.target.classList.contains("card__image")) {
     popupImgConteiner.src = evt.target.src;
     popupImgConteiner.alt = evt.target.alt;
     popupCaption.textContent = evt.target.alt;
     openPopup(imgPopup);
   }
-}
 
-closeButton.forEach((closeButton) => {
+closeButtons.forEach((closeButton) => {
   const closesPopup = closeButton.closest(".popup");
 
   closeButton.addEventListener("click", () => {
     closePopup(closesPopup);
-    if (closesPopup.classList.contains("popup_type_new-card")) {
-      resetCreateForm();
-			clearValidation(formCreate,validationConf);
-    }
-		if(closesPopup.classList.contains('popup_type_change-avatar')) {
-			resetChangeAvatarForm();
-			clearValidation(formChangeAvatarElement, validationConf);
-	}
+  //   if (closesPopup.classList.contains("popup_type_new-card")) {
+  //     resetCreateForm();
+	// 		clearValidation(formCreate,validationConf);
+  //   }
+	// 	if(closesPopup.classList.contains('popup_type_change-avatar')) {
+	// 		resetChangeAvatarForm();
+	// 		clearValidation(formChangeAvatarElement, validationConf);
+	// }
   });
 });
-function profileEdit(evt) {
+function handleProfileFormSubmit(evt) {
   evt.preventDefault();
 	renderLoading(true,formEdit.elements['edit-button']);
 
@@ -89,14 +89,15 @@ function profileEdit(evt) {
 		.then((res) => {
 			profileTitle.textContent = res.name;
 			profileDescription.textContent = res.about;
+			closePopup(popupEdit);
 		})
 		.catch((err) => {
 			console.log(err);
 		})
 		.finally(() => renderLoading(false, formEdit.elements['edit-button']));
-  closePopup(popupEdit);
+  
 }
-formEdit.addEventListener("submit", profileEdit);
+formEdit.addEventListener("submit", handleProfileFormSubmit);
 
 function createCards(evt) {
   evt.preventDefault();
@@ -108,16 +109,17 @@ function createCards(evt) {
 			link: card.link,
 			cardId: card._id,
 			cardOwnerId: card.owner._id,
-			myId: card._id,
+			userId: card._id,
 			likes: card.likes
 			}, deleteCard);
+			closePopup(popupNew);
 	})
 	.catch((err) => {
 		console.log(err);
 	})
 	.finally(() => renderLoading(false, formCreate.elements['new-card-button']));
   // addCards({ name: placeName.value, link: link.value }, deleteCard);
-  closePopup(popupNew);
+  
 }
 
 formCreate.addEventListener("submit", createCards);
@@ -130,12 +132,12 @@ function handleChangeAvatarFormSubmit(evt) {
     renderLoading(true, formChangeAvatarElement.elements['change-avatar-button']);
     changeUserAvatar(newAvatarUrlInput.value)
         .then(newAvatarConfig => {
-            profileAvatarPicture.style = "background-image: url(" + newAvatarConfig.avatar + ");";
+					profileAvaPic.style = "background-image: url(" + newAvatarConfig.avatar + ");";
         })
         .catch(err => {console.log(err)})
 				.finally(() => renderLoading(false, formChangeAvatarElement.elements['change-avatar-button']));
     closePopup(document.querySelector('.popup_is-opened'));
-    // resetChangeAvatarForm();
+    resetChangeAvatarForm();
 }
 
 formChangeAvatarElement.addEventListener('submit', handleChangeAvatarFormSubmit);
@@ -168,7 +170,7 @@ enableValidation(validationConf);
 
 // Добавляю карточки, меняю инфу профиля
 
-Promise.all([GetCardsArray(), getUserData()])
+Promise.all([getCardsArray(), getUserData()])
 .then(([cardsArray, myUserData]) => {
 	cardsArray.reverse().forEach(card => addCards(
 		{ name: card.name,

@@ -18,7 +18,7 @@ export function getUserData() {
 		.then(res => handleResponse(res));
 }
 
-export function GetCardsArray() {
+export function getCardsArray() {
 	return fetch(`${config.baseUrl}/cards`, {
 		headers: config.headers
 		})
