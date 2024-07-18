@@ -37,7 +37,6 @@ const changeAvatarButton = mContent.querySelector('.profile__image');
 const changeAvatarPopup = document.querySelector('.popup_type_change-avatar')
 
 let userId;
-
 function addCards(cardDatas, deleteCard) {
   const cardElement = createCard(cardDatas, deleteCard, openCards, likeCards);
    cardsContent.prepend(cardElement);
@@ -109,17 +108,18 @@ function createCards(evt) {
 			link: card.link,
 			cardId: card._id,
 			cardOwnerId: card.owner._id,
-			userId: card._id,
+			myId: card._id,
 			likes: card.likes
 			}, deleteCard);
-			closePopup(popupNew);
+			formCreate.reset();
 	})
 	.catch((err) => {
 		console.log(err);
 	})
 	.finally(() => renderLoading(false, formCreate.elements['new-card-button']));
   // addCards({ name: placeName.value, link: link.value }, deleteCard);
-  
+	
+	closePopup(popupNew);
 }
 
 formCreate.addEventListener("submit", createCards);
