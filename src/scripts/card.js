@@ -14,11 +14,12 @@ export function createCard(cardData, deleteCard, openCards, likeCards) {
   const cardDeleteButton = cardElement.querySelector(".card__delete-button");
   if (cardData.cardOwnerId != cardData.myId) {
     cardDeleteButton.classList.add("card__delete-button-hidden");
-  } else {
-    cardDeleteButton.addEventListener("click", (evt) => {
-      deleteCard(evt, cardData.cardId);
-    });
-  }
+  }else{
+		cardDeleteButton.addEventListener('click',(evt) => {
+				deleteCard(evt, cardData.cardId);
+		});
+	}
+  
 
   const cardLikeButton = cardElement.querySelector(".card__like-button");
   if (cardData.likes != 0) {

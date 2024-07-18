@@ -29,11 +29,14 @@ if(hasInvalidInput(inputList)) {
 const disableButton = (buttonElement, inactiveButtonClass) => {
   buttonElement.classList.add(inactiveButtonClass);
   buttonElement.setAttribute('disabled', true);
+	buttonElement.classList.add('popup__margin-button');
 }
 
 const enableButton = (buttonElement, inactiveButtonClass) => {
+	
   buttonElement.classList.remove(inactiveButtonClass);
   buttonElement.removeAttribute('disabled');
+	buttonElement.classList.remove('popup__margin-button');
 }
 
 const checkInputValidity = (formElement, inputElement,inputErrorClass, errorClass) => {

@@ -117,9 +117,7 @@ function createCards(evt) {
 		console.log(err);
 	})
 	.finally(() => renderLoading(false, formCreate.elements['new-card-button']));
-  // addCards({ name: placeName.value, link: link.value }, deleteCard);
-	
-	closePopup(popupNew);
+  closePopup(popupNew);
 }
 
 formCreate.addEventListener("submit", createCards);
@@ -158,7 +156,7 @@ const validationConf = {
 	formSelector: ".popup__form",
 	inputSelector: ".popup__input",
 	submitButtonSelector: ".popup__button",
-	inactiveButtonClass:".popup_button_disabled",
+	inactiveButtonClass:"popup_button_disabled",
 	inputErrorClass: "popup__input_type_error",
 	errorClass: "popup__error_visible",
 };
