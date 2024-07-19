@@ -98,17 +98,33 @@ function handleProfileFormSubmit(evt) {
 }
 formEdit.addEventListener("submit", handleProfileFormSubmit);
 
+// function createCards(evt) {
+//   evt.preventDefault();
+// 	renderLoading(true,formCreate.elements['new-card-button']);
+
+// 	sendCardData({ name: placeName.value, link: link.value })
+// 	.then((card) => {
+// 		console.log(card);
+// 			formCreate.reset();
+// 	})
+// 	.catch((err) => {
+// 		console.log(err);
+// 	})
+// 	.finally(() => renderLoading(false, formCreate.elements['new-card-button']));
+//   closePopup(popupNew);
+// }
+
 function createCards(evt) {
   evt.preventDefault();
 	renderLoading(true,formCreate.elements['new-card-button']);
 
 	sendCardData({ name: placeName.value, link: link.value })
-	.then(card => {
+	.then((card) => {
 		addCards({name: card.name,
 			link: card.link,
 			cardId: card._id,
 			cardOwnerId: card.owner._id,
-			myId: card._id,
+			myId: card.owner._id,
 			likes: card.likes
 			}, deleteCard);
 			formCreate.reset();
