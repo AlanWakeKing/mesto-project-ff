@@ -128,12 +128,13 @@ function createCards(evt) {
 			likes: card.likes
 			}, deleteCard);
 			formCreate.reset();
+			closePopup(popupNew);
 	})
 	.catch((err) => {
 		console.log(err);
 	})
 	.finally(() => renderLoading(false, formCreate.elements['new-card-button']));
-  closePopup(popupNew);
+  
 }
 
 formCreate.addEventListener("submit", createCards);
@@ -147,11 +148,12 @@ function handleChangeAvatarFormSubmit(evt) {
     changeUserAvatar(newAvatarUrlInput.value)
         .then(newAvatarConfig => {
 					profileAvaPic.style = "background-image: url(" + newAvatarConfig.avatar + ");";
+					closePopup(document.querySelector('.popup_is-opened'));
+					resetChangeAvatarForm();
         })
         .catch(err => {console.log(err)})
 				.finally(() => renderLoading(false, formChangeAvatarElement.elements['change-avatar-button']));
-    closePopup(document.querySelector('.popup_is-opened'));
-    resetChangeAvatarForm();
+
 }
 
 formChangeAvatarElement.addEventListener('submit', handleChangeAvatarFormSubmit);
